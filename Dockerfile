@@ -25,5 +25,5 @@ COPY . .
 # Expose port flask
 EXPOSE 5000
 
-# Jalankan aplikasi
-CMD ["sh", "-c", "waitress-serve --port=$PORT app:app"]
+# Jalankan aplikasi dengan waitress
+CMD ["sh", "-c", "waitress-serve --port=$PORT app:app"] 
