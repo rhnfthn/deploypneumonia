@@ -26,4 +26,4 @@ COPY . .
 EXPOSE 5000
 
 # Jalankan aplikasi
-CMD ["sh", "-c", "gunicorn -w 1 -b 0.0.0.0:$PORT app:app"]
+CMD ["sh", "-c", "waitress-serve --port=$PORT app:app"]
