@@ -1,11 +1,19 @@
+print("=== MULAI IMPORT FLASK ===")
 from flask import Flask, render_template, request
+print("=== MULAI IMPORT TENSORFLOW ===")
 from tensorflow.keras.models import load_model
+print("=== MULAI IMPORT NUMPY ===")
 import numpy as np
+print("=== MULAI IMPORT CV2 ===")
 import cv2
+print("=== MULAI IMPORT OS ===")
 import os
 
+print("=== MULAI INISIALISASI FLASK ===")
 app = Flask(__name__, template_folder="templates")
+print("=== MULAI LOAD MODEL ===")
 model = load_model('model_vgg16_pneumonia.h5')
+print("=== MODEL BERHASIL DILOAD ===")
 class_names = ['NORMAL', 'PNEUMONIA']
 
 UPLOAD_FOLDER = 'static/uploads'
