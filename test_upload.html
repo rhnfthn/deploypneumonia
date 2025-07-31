@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Upload - PneumoDetect</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .upload-area { border: 2px dashed #ccc; padding: 20px; text-align: center; margin: 20px 0; }
+        .result { margin: 20px 0; padding: 10px; border-radius: 5px; }
+        .success { background-color: #d4edda; border: 1px solid #c3e6cb; }
+        .error { background-color: #f8d7da; border: 1px solid #f5c6cb; }
+        button { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <h1>Test Upload PneumoDetect</h1>
+    
+    <div class="upload-area">
+        <input type="file" id="imageFile" accept="image/*" style="display: none;">
+        <button onclick="document.getElementById('imageFile').click()">Pilih Gambar X-Ray</button>
+        <p id="fileInfo"></p>
+    </div>
+    
+    <button onclick="uploadImage()" id="uploadBtn" disabled>Upload & Prediksi</button>
+    
+    <div id="result"></div>
+    
+    <script>
+        document.getElementById('imageFile').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                document.getElementById('fileInfo').textContent = `File: ${file.name} (${file.size} bytes)`;
+                document.getElementById('uploadBtn').disabled = false;
+            }
+        });
+        
+        function uploadImage() {
+            const fileInput = document.getElementById('imageFile');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                alert('Pilih file terlebih dahulu!');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('image', file);
+            
+            document.getElementById('result').innerHTML = '<div class="result">Mengupload dan memprediksi...</div>';
+            
+            fetch('http://localhost/pneumoniadetect/predict/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Response:', data);
+                
+                if (data.success) {
+                    document.getElementById('result').innerHTML = `
+                        <div class="result success">
+                            <h3>✅ Prediksi Berhasil!</h3>
+                            <p><strong>Hasil:</strong> ${data.prediction}</p>
+                            <p><strong>Confidence:</strong> ${data.confidence}%</p>
+                            <p><strong>Gambar:</strong> ${data.image_path}</p>
+                        </div>
+                    `;
+                } else {
+                    document.getElementById('result').innerHTML = `
+                        <div class="result error">
+                            <h3>❌ Prediksi Gagal</h3>
+                            <p><strong>Error:</strong> ${data.message}</p>
+                        </div>
+                    `;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('result').innerHTML = `
+                    <div class="result error">
+                        <h3>❌ Error Network</h3>
+                        <p><strong>Error:</strong> ${error.message}</p>
+                    </div>
+                `;
+            });
+        }
+    </script>
+</body>
+</html> 

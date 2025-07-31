@@ -1,0 +1,41 @@
+# CodeIgniter
+application/cache/*
+application/logs/*
+!application/cache/index.html
+!application/logs/index.html
+
+# Uploads (exclude uploaded images)
+assets/uploads/*
+!assets/uploads/index.html
+
+# Environment files
+.env
+.env.local
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+env/
+
+# Node modules (if any)
+node_modules/
+
+# Backup files
+*.bak
+*.backup 
